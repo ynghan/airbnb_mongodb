@@ -1,0 +1,49 @@
+generateDummyData = async (nGuest, nHouse, nReservation) => {
+    ...
+    const houses = [];
+    ...
+    generateHouses(houses, nHouse);
+    ...
+    // 예약 생성
+    generateReservation(guests[0], houses, reservatioins, nReservation);
+}
+
+async function generateHouses(houses, numHouses) {
+    ...
+    houses.push(
+      new House({
+        type: faker.random.arrayElement(["entire", "private"]),
+        // name: faker.company.companyName(),
+        price: faker.datatype.number({ min: 30000 }),
+        // rating: Array.from({length: 5}, () => faker.datatype.number({ min: 0, max: 5 })),
+        address: {
+          street: faker.address.streetName(),
+          city: faker.address.city(),
+          zipcode: faker.address.zipCode(),
+        },
+        amenities: Array.from(
+          { length: faker.datatype.number({ min: 1, max: 5 }) },
+          () => faker.commerce.product()
+        ),
+        dates: dates,
+      })
+    );
+    ...
+}
+
+function generateReservation(guest, houses, reservations, nReservation) {
+    for (let i = 0; i < nReservation; i++) {
+
+    //반복문 안에서 houses 배열 중 하나를 랜덤으로 골라.
+
+    // house의 dates 배열에서 두 개의 날짜를 무작위로 선택
+    let dates = faker.random
+        .arrayElements(house.dates, 2)
+        .map(
+        (dateObj) =>
+            new Date(dateObj.date.year, dateObj.date.month - 1, dateObj.date.day)
+        );
+        ...
+    }
+}
+      

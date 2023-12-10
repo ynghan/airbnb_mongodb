@@ -1,0 +1,40 @@
+function generateReservation(guests, houses, reservations, nReservation) {
+  let guest = faker.random.arrayElement(guests);
+  for (let i = 0; i < nReservation; i++) {
+    //houses 배열 중 하나의 house를 랜덤으로 골라.
+    let house = faker.random.arrayElement(houses);
+
+    // house의 dates 배열에서 두 개의 날짜를 무작위로 선택
+    let dates = faker.random
+      .arrayElements(house.dates, 2)
+      .map(
+        (dateObj) =>
+          new Date(dateObj.date.year, dateObj.date.month - 1, dateObj.date.day)
+      );
+
+    // 날짜를 오름차순으로 정렬하여 check_in과 check_out 날짜를 결정
+    // dates.sort((a, b) => a.getTime() - b.getTime());
+    dates.sort((a, b) => a.getTime() - b.getTime());
+
+    let checkIn = dates[0];
+    let checkOut = dates[1];
+
+    let reservation = new Reservation({
+      guest: guest._id,
+      house: house._id,
+      num_people: faker.datatype.number({ min: 1, max: 10 }),
+      check_in: {
+        year: checkIn.getFullYear(),
+        month: checkIn.getMonth() + 1, // JavaScript month is 0-indexed
+        day: checkIn.getDate(),
+      },
+      check_out: {
+        year: checkOut.getFullYear(),
+        month: checkOut.getMonth() + 1, // JavaScript month is 0-indexed
+        day: checkOut.getDate(),
+      },
+    });
+    console.log(reservation);
+    reservations.push(reservation);
+  }
+}
